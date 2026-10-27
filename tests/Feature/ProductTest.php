@@ -80,3 +80,11 @@ test('deletes a product', function () {
 
     $this->assertDatabaseMissing('products', ['id' => $product->id]);
 });
+
+test('protected routes are throttled after too many requests', function () {
+    foreach (range(1, 60) as $attempt) {
+        $this->getJson('/api/products')->assertOk();
+    }
+
+    $this->getJson('/api/products')->assertTooManyRequests();
+});

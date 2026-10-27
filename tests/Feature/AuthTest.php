@@ -67,3 +67,12 @@ test('login is throttled after too many attempts', function () {
     $this->postJson('/api/auth/login', ['email' => 'nobody@example.com', 'password' => 'bad'])
         ->assertTooManyRequests();
 });
+
+test('tokens expire after the configured lifetime', function () {
+    $user = User::factory()->create();
+    $token = $user->createToken('auth_token')->plainTextToken;
+
+    $this->travel(1441)->minutes();
+
+    $this->withToken($token)->getJson('/api/products')->assertUnauthorized();
+});

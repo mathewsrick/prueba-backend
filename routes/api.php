@@ -13,7 +13,8 @@ Route::prefix('auth')->group(function () {
     Route::middleware('auth:sanctum')->post('logout', [AuthController::class, 'logout']);
 });
 
-Route::middleware('auth:sanctum')->group(function () {
+// 60 requests per minute per user on the protected API
+Route::middleware(['auth:sanctum', 'throttle:60,1'])->group(function () {
     Route::apiResource('products', ProductController::class);
     Route::apiResource('products.prices', ProductPriceController::class)->only(['index', 'store']);
     Route::apiResource('currencies', CurrencyController::class);
