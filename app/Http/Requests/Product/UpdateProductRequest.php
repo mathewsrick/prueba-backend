@@ -24,7 +24,7 @@ class UpdateProductRequest extends FormRequest
     {
         return [
             'name' => ['sometimes', 'string', 'max:255'],
-            'description' => ['sometimes', 'string'],
+            'description' => ['nullable', 'string'],
             'currency_id' => ['sometimes', 'integer', 'exists:currencies,id'],
             'price' => ['sometimes', 'numeric', 'min:0'],
             'tax_cost' => ['sometimes', 'numeric', 'min:0'],

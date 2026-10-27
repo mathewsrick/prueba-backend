@@ -22,7 +22,7 @@ class ProductResource extends JsonResource
             'tax_cost' => $this->tax_cost,
             'manufacturing_cost' => $this->manufacturing_cost,
             'currency' => new CurrencyResource($this->whenLoaded('currency')),
-            'prices' => ProductPriceResource::collection($this->whenLoaded('prices')), // F4
+            'prices' => ProductPriceResource::collection($this->whenLoaded('prices')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

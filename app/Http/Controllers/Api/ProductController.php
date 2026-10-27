@@ -26,7 +26,7 @@ class ProductController extends Controller
 
     public function show(Product $product): ProductResource
     {
-        $product->load('currency');
+        $product->load('currency', 'prices.currency');
         return new ProductResource($product);
     }
 
