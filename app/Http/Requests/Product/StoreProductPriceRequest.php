@@ -24,7 +24,9 @@ class StoreProductPriceRequest extends FormRequest
     public function rules(): array
     {
         return [
+            // optional: when empty the controller calculates it with the exchange rate
             'price' => ['nullable', 'numeric', 'min:0'],
+            // a product can only have one price per currency
             'currency_id' => ['required', 'integer', 'exists:currencies,id', Rule::unique('product_prices')->where(function ($query) {
                 return $query->where('product_id', $this->route('product')->id);
             })],

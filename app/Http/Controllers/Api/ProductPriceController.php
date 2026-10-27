@@ -9,9 +9,11 @@ use App\Models\Currency;
 use App\Models\Product;
 use App\Repositories\Contracts\ProductPriceRepositoryInterface;
 use App\Services\PriceConverter;
+use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
+#[Group('Product prices')]
 class ProductPriceController extends Controller
 {
     public function __construct(
@@ -19,6 +21,9 @@ class ProductPriceController extends Controller
         private PriceConverter $priceConverter,
     ) {}
 
+    /**
+     * List the prices of a product in other currencies.
+     */
     public function index(Product $product): AnonymousResourceCollection
     {
         $productPrices = $this->productPrices->forProduct($product);
@@ -26,9 +31,16 @@ class ProductPriceController extends Controller
         return ProductPriceResource::collection($productPrices);
     }
 
+    /**
+     * Add a price for a product in another currency.
+     *
+     * If `price` is not sent it is calculated from the exchange rates.
+     */
     public function store(StoreProductPriceRequest $request, Product $product): JsonResponse
     {
         $validated = $request->validated();
+
+        // price is optional, if missing we convert it from the product base price
         if (! isset($validated['price'])) {
             $currency = Currency::findOrFail($validated['currency_id']);
             $validated['price'] = $this->priceConverter->convert($product, $currency);

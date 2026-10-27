@@ -7,11 +7,12 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Shared CRUD logic for the Eloquent repositories.
+ * Each concrete repository only passes its model and adds its own queries.
+ */
 abstract class BaseRepository implements BaseRepositoryInterface
 {
-    /**
-     * Create a new class instance.
-     */
     public function __construct(protected Model $model) {}
 
     public function all(array $with = []): Collection

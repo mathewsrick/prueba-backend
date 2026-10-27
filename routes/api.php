@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProductPriceController;
 use Illuminate\Support\Facades\Route;
 
+// 6 attempts per minute on public auth routes to slow down brute force
 Route::prefix('auth')->group(function () {
     Route::post('login', [AuthController::class, 'login'])->middleware('throttle:6,1');
     Route::post('register', [AuthController::class, 'register'])->middleware('throttle:6,1');

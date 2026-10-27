@@ -1,0 +1,683 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-10-27T05:43:15.521Z",
+  "__export_source": "insomnia.desktop.app:v13.3.0",
+  "resources": [
+    {
+      "_id": "wrk_prueba_backend",
+      "_type": "workspace",
+      "parentId": null,
+      "name": "Prueba Backend - Products API",
+      "description": "Products, currencies and prices per currency. Run \"Login\" (or \"Register\") first: the token is saved in the environment automatically.",
+      "scope": "collection",
+      "created": 1793079795521,
+      "modified": 1793079795521
+    },
+    {
+      "_id": "env_base",
+      "_type": "environment",
+      "parentId": "wrk_prueba_backend",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8000/api",
+        "token": "",
+        "product_id": 1,
+        "currency_id": 6
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "token",
+          "product_id",
+          "currency_id"
+        ]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1,
+      "created": 1793079795521,
+      "modified": 1793079795521
+    },
+    {
+      "_id": "fld_auth",
+      "_type": "request_group",
+      "parentId": "wrk_prueba_backend",
+      "name": "Auth",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 1,
+      "created": 1793079795521,
+      "modified": 1793079795521
+    },
+    {
+      "_id": "req_register",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Register",
+      "description": "Creates a user and returns a token (saved in the environment).",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/register",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Ricardo\",\n  \"email\": \"ricardo@example.com\",\n  \"password\": \"secret123\",\n  \"password_confirmation\": \"secret123\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "preRequestScript": "",
+      "afterResponseScript": "const body = insomnia.response.json();\nif (body.token) {\n  insomnia.environment.set('token', body.token);\n}",
+      "metaSortKey": 2,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "created": 1793079795521,
+      "modified": 1793079795521
+    },
+    {
+      "_id": "req_login",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Login",
+      "description": "Returns a token (saved in the environment). Max 6 attempts per minute.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/login",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"ricardo@example.com\",\n  \"password\": \"secret123\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "preRequestScript": "",
+      "afterResponseScript": "const body = insomnia.response.json();\nif (body.token) {\n  insomnia.environment.set('token', body.token);\n}",
+      "metaSortKey": 3,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "created": 1793079795521,
+      "modified": 1793079795521
+    },
+    {
+      "_id": "req_logout",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Logout",
+      "description": "Revokes the current token.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/logout",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}",
+        "prefix": ""
+      },
+      "preRequestScript": "",
+      "afterResponseScript": "",
+      "metaSortKey": 4,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "created": 1793079795521,
+      "modified": 1793079795521
+    },
+    {
+      "_id": "fld_products",
+      "_type": "request_group",
+      "parentId": "wrk_prueba_backend",
+      "name": "Products",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 5,
+      "created": 1793079795521,
+      "modified": 1793079795521
+    },
+    {
+      "_id": "req_products_index",
+      "_type": "request",
+      "parentId": "fld_products",
+      "name": "List products",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/products?page=1",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}",
+        "prefix": ""
+      },
+      "preRequestScript": "",
+      "afterResponseScript": "",
+      "metaSortKey": 6,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "created": 1793079795521,
+      "modified": 1793079795521
+    },
+    {
+      "_id": "req_products_store",
+      "_type": "request",
+      "parentId": "fld_products",
+      "name": "Create product",
+      "description": "Saves the new id in product_id.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/products",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Laptop\",\n  \"description\": \"Gaming laptop 16GB RAM\",\n  \"price\": 1500,\n  \"tax_cost\": 150,\n  \"manufacturing_cost\": 900,\n  \"currency_id\": 1\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}",
+        "prefix": ""
+      },
+      "preRequestScript": "",
+      "afterResponseScript": "const body = insomnia.response.json();\nif (body.data && body.data.id) {\n  insomnia.environment.set('product_id', body.data.id);\n}",
+      "metaSortKey": 7,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "created": 1793079795521,
+      "modified": 1793079795521
+    },
+    {
+      "_id": "req_products_show",
+      "_type": "request",
+      "parentId": "fld_products",
+      "name": "Get product",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/products/{{ _.product_id }}",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}",
+        "prefix": ""
+      },
+      "preRequestScript": "",
+      "afterResponseScript": "",
+      "metaSortKey": 8,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "created": 1793079795521,
+      "modified": 1793079795521
+    },
+    {
+      "_id": "req_products_update",
+      "_type": "request",
+      "parentId": "fld_products",
+      "name": "Update product",
+      "description": "Only the fields sent are updated.",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/products/{{ _.product_id }}",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"price\": 1399.99\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}",
+        "prefix": ""
+      },
+      "preRequestScript": "",
+      "afterResponseScript": "",
+      "metaSortKey": 9,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "created": 1793079795521,
+      "modified": 1793079795521
+    },
+    {
+      "_id": "req_products_destroy",
+      "_type": "request",
+      "parentId": "fld_products",
+      "name": "Delete product",
+      "description": "",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/products/{{ _.product_id }}",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}",
+        "prefix": ""
+      },
+      "preRequestScript": "",
+      "afterResponseScript": "",
+      "metaSortKey": 10,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "created": 1793079795521,
+      "modified": 1793079795521
+    },
+    {
+      "_id": "fld_prices",
+      "_type": "request_group",
+      "parentId": "wrk_prueba_backend",
+      "name": "Product prices",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 11,
+      "created": 1793079795521,
+      "modified": 1793079795521
+    },
+    {
+      "_id": "req_prices_index",
+      "_type": "request",
+      "parentId": "fld_prices",
+      "name": "List product prices",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/products/{{ _.product_id }}/prices",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}",
+        "prefix": ""
+      },
+      "preRequestScript": "",
+      "afterResponseScript": "",
+      "metaSortKey": 12,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "created": 1793079795521,
+      "modified": 1793079795521
+    },
+    {
+      "_id": "req_prices_store_manual",
+      "_type": "request",
+      "parentId": "fld_prices",
+      "name": "Add price (manual)",
+      "description": "Price in EUR sent by the client.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/products/{{ _.product_id }}/prices",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"currency_id\": 2,\n  \"price\": 1290\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}",
+        "prefix": ""
+      },
+      "preRequestScript": "",
+      "afterResponseScript": "",
+      "metaSortKey": 13,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "created": 1793079795521,
+      "modified": 1793079795521
+    },
+    {
+      "_id": "req_prices_store_auto",
+      "_type": "request",
+      "parentId": "fld_prices",
+      "name": "Add price (calculated)",
+      "description": "No price sent: it is calculated with the exchange rates (COP).",
+      "method": "POST",
+      "url": "{{ _.base_url }}/products/{{ _.product_id }}/prices",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"currency_id\": 3\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}",
+        "prefix": ""
+      },
+      "preRequestScript": "",
+      "afterResponseScript": "",
+      "metaSortKey": 14,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "created": 1793079795521,
+      "modified": 1793079795521
+    },
+    {
+      "_id": "fld_currencies",
+      "_type": "request_group",
+      "parentId": "wrk_prueba_backend",
+      "name": "Currencies",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 15,
+      "created": 1793079795521,
+      "modified": 1793079795521
+    },
+    {
+      "_id": "req_currencies_index",
+      "_type": "request",
+      "parentId": "fld_currencies",
+      "name": "List currencies",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/currencies",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}",
+        "prefix": ""
+      },
+      "preRequestScript": "",
+      "afterResponseScript": "",
+      "metaSortKey": 16,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "created": 1793079795521,
+      "modified": 1793079795521
+    },
+    {
+      "_id": "req_currencies_store",
+      "_type": "request",
+      "parentId": "fld_currencies",
+      "name": "Create currency",
+      "description": "Saves the new id in currency_id.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/currencies",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Mexican Peso\",\n  \"symbol\": \"MX$\",\n  \"exchange_rate\": 18.5\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}",
+        "prefix": ""
+      },
+      "preRequestScript": "",
+      "afterResponseScript": "const body = insomnia.response.json();\nif (body.data && body.data.id) {\n  insomnia.environment.set('currency_id', body.data.id);\n}",
+      "metaSortKey": 17,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "created": 1793079795521,
+      "modified": 1793079795521
+    },
+    {
+      "_id": "req_currencies_show",
+      "_type": "request",
+      "parentId": "fld_currencies",
+      "name": "Get currency",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/currencies/{{ _.currency_id }}",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}",
+        "prefix": ""
+      },
+      "preRequestScript": "",
+      "afterResponseScript": "",
+      "metaSortKey": 18,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "created": 1793079795521,
+      "modified": 1793079795521
+    },
+    {
+      "_id": "req_currencies_update",
+      "_type": "request",
+      "parentId": "fld_currencies",
+      "name": "Update currency",
+      "description": "",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/currencies/{{ _.currency_id }}",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"exchange_rate\": 18.9\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}",
+        "prefix": ""
+      },
+      "preRequestScript": "",
+      "afterResponseScript": "",
+      "metaSortKey": 19,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "created": 1793079795521,
+      "modified": 1793079795521
+    },
+    {
+      "_id": "req_currencies_destroy",
+      "_type": "request",
+      "parentId": "fld_currencies",
+      "name": "Delete currency",
+      "description": "Returns 409 if the currency is used by a product or price.",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/currencies/{{ _.currency_id }}",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}",
+        "prefix": ""
+      },
+      "preRequestScript": "",
+      "afterResponseScript": "",
+      "metaSortKey": 20,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "created": 1793079795521,
+      "modified": 1793079795521
+    }
+  ]
+}
