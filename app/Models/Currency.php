@@ -26,4 +26,9 @@ class Currency extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    public function productPrices(): HasMany
+    {
+        return $this->hasMany(ProductPrice::class);
+    }
 }
