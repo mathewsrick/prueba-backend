@@ -7,7 +7,8 @@ use App\Repositories\Contracts\CurrencyRepositoryInterface;
 
 class CurrencyRepository extends BaseRepository implements CurrencyRepositoryInterface
 {
-    public function __construct(Currency $model) {
+    public function __construct(Currency $model)
+    {
         parent::__construct($model);
     }
 }

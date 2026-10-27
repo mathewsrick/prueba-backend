@@ -29,7 +29,7 @@ class ProductPriceController extends Controller
     public function store(StoreProductPriceRequest $request, Product $product): JsonResponse
     {
         $validated = $request->validated();
-        if (!isset($validated['price'])) {
+        if (! isset($validated['price'])) {
             $currency = Currency::findOrFail($validated['currency_id']);
             $validated['price'] = $this->priceConverter->convert($product, $currency);
         }

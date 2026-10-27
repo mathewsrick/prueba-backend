@@ -17,7 +17,7 @@ class AuthController extends Controller
         $credentials = $request->validated();
         $user = User::where('email', $credentials['email'])->first();
 
-        if (!$user || !Hash::check($credentials['password'], $user->password)) {
+        if (! $user || ! Hash::check($credentials['password'], $user->password)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
@@ -25,7 +25,7 @@ class AuthController extends Controller
 
         return response()->json([
             'user' => $user,
-            'token' => $token
+            'token' => $token,
         ]);
     }
 
@@ -36,7 +36,7 @@ class AuthController extends Controller
 
         return response()->json([
             'user' => $user,
-            'token' => $token
+            'token' => $token,
         ], 201);
     }
 
@@ -45,7 +45,7 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
-            'message' => 'Successfully logged out'
+            'message' => 'Successfully logged out',
         ]);
     }
 }

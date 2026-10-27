@@ -24,6 +24,7 @@ class CurrencyController extends Controller
     public function store(StoreCurrencyRequest $request): JsonResponse
     {
         $currency = $this->currencies->create($request->validated());
+
         return (new CurrencyResource($currency))->response()->setStatusCode(201);
     }
 

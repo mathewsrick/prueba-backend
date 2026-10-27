@@ -9,7 +9,6 @@ use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Repositories\Contracts\ProductRepositoryInterface;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response as HttpResponse;
 
@@ -27,6 +26,7 @@ class ProductController extends Controller
     public function show(Product $product): ProductResource
     {
         $product->load('currency', 'prices.currency');
+
         return new ProductResource($product);
     }
 
@@ -34,6 +34,7 @@ class ProductController extends Controller
     {
         $product = $this->products->create($request->validated());
         $product->load('currency');
+
         return (new ProductResource($product))->response()
             ->setStatusCode(201);
     }

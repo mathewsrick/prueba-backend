@@ -35,5 +35,4 @@ class StoreProductPriceRequest extends FormRequest
     {
         return ['currency_id.unique' => 'This product already has a price in that currency.'];
     }
-
 }

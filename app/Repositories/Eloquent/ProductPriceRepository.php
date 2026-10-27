@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Collection;
 
 class ProductPriceRepository extends BaseRepository implements ProductPriceRepositoryInterface
 {
-    public function __construct(ProductPrice $model) {
+    public function __construct(ProductPrice $model)
+    {
         parent::__construct($model);
     }
 
